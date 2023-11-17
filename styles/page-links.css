@@ -1,0 +1,29 @@
+.pdf-link-section h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.pdf-link-section h2 {
+    margin: 20px;
+    font-size: 1.5em;
+    padding-left: 30px;
+}
+
+.pdf-link-section a{
+    color: #d3d3d3;
+    text-decoration: none;
+}
+
+.pdf-link-section a:hover{
+    color: #808080;
+}
+
+.source {
+    font-size: .65em;
+    margin-left: 20px;
+}
+
+.pdf-link-section p {
+    margin: 0;
+    padding-left: 75px;
+}

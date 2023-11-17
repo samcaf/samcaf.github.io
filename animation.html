@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rotating Cube</title>
+	<style>
+		#canvas-container {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="canvas-container"></div>
+	<script src="https://cdn.jsdelivr.net/npm/three@0.133.2/build/three.min.js"></script>
+	<script>
+		// Initialize Three.js scene
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+		const renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+		// Create a cube
+		const geometry = new THREE.BoxGeometry();
+		const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+		const cube = new THREE.Mesh(geometry, material);
+		scene.add(cube);
+
+		// Position the camera
+		camera.position.z = 5;
+
+		// Add event listener to handle mouse events
+		let isDragging = false;
+		let previousMousePosition = {
+			x: 0,
+			y: 0
+		};
+		document.addEventListener('mousedown', event => {
+			isDragging = true;
+		});
+		document.addEventListener('mouseup', event => {
+			isDragging = false;
+		});
+		document.addEventListener('mousemove', event => {
+			if (isDragging) {
+				let deltaMove = {
+					x: event.offsetX - previousMousePosition.x,
+					y: event.offsetY - previousMousePosition.y
+				};
+
+				// Rotate the cube
+				cube.rotation.x += deltaMove.y * 0.01;
+				cube.rotation.y += deltaMove.x * 0.01;
+			}
+
+			previousMousePosition = {
+				x: event.offsetX,
+				y: event.offsetY
+			};
+		});
+
+		// Render loop
+		const animate = function () {
+			requestAnimationFrame(animate);
+
+			// Render the scene
+			renderer.render(scene, camera);
+		};
+		animate();
+	</script>
+</body>
+</html>
