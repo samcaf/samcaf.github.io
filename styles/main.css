@@ -606,7 +606,7 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 /* QCD hero: three colour-charged quarks pulled to the centre by gluon "springs",
    the whole bound state rotating and gently breathing (spring pull). */
 .qcd-breathe { transform-box: view-box; transform-origin: 200px 200px; animation: qcd-breathe 8s ease-in-out infinite; }
-.qcd-spin    { transform-box: view-box; transform-origin: 200px 200px; animation: spin 48s linear infinite; }
+.qcd-spin    { transform-box: view-box; transform-origin: 200px 200px; animation: spin 8s linear infinite; }
 /* quarks swing from +R through the centre to -R and back (springs stay anchored at centre) */
 @keyframes qcd-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(-1); } }
 .gluon-spring { fill: none; stroke: var(--text-mid); stroke-width: 2; stroke-linecap: round; opacity: 0.5; }
@@ -674,4 +674,3 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
   .timeline .sub li { flex-wrap: wrap; }
   .timeline .sub .sy { min-width: 46px; }
 }
-
