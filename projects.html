@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects · Samuel Alipour-fard</title>
+  <meta name="description" content="Open-source projects by Samuel Alipour-fard — physics research code, scientific-computing tools, and data-science experiments.">
+  <link rel="icon" type="image/svg+xml" href="images/mark.svg">
+  <script>
+    document.documentElement.classList.add('js');
+    (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap">
+      <a href="index.html" class="brand">
+        <img class="mark" src="images/mark.svg" alt="">
+        <span>Samuel Alipour-fard</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#work">Work</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="publications.html">Publications</a></li>
+          <li><a href="projects.html" class="active">Projects</a></li>
+          <li><a href="projects.html#notes">Notes</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right">
+        <a class="btn btn-ghost" href="pdfs/cv.pdf" target="_blank" rel="noopener">CV</a>
+        <button class="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.5M12 19v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12H5M19 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        </button>
+        <button class="nav-toggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Projects</div>
+      <h1>Projects</h1>
+      <p>Open-source work spanning particle-physics research code, general scientific-computing tools, and the
+        occasional data-science experiment. Everything here is public on <a href="https://github.com/samcaf" target="_blank" rel="noopener">GitHub</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="filters reveal">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="computing">Scientific computing</button>
+        <button class="filter" data-filter="tools">Tools</button>
+      </div>
+
+      <div class="grid grid-3">
+
+        <!-- RENC -->
+        <article class="card reveal" data-tags="physics computing viz">
+          <div class="card-thumb"><img src="assets/projects/renc_bullseye_qcd.png" alt="Energy-correlator bullseye visualization" loading="lazy"></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Python"></span> Python · C++</div>
+            <h3><a href="https://github.com/samcaf/ResolvedEnergyCorrelators" target="_blank" rel="noopener">ResolvedEnergyCorrelators</a></h3>
+            <p>A computational speed-up that broke records for N-particle energy correlations, turning physics-rich QCD correlations into "bullseye" images you can read intuitively.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/ResolvedEnergyCorrelators" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+              <a href="https://arxiv.org/abs/2410.16368" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Ising -->
+        <article class="card reveal" data-tags="physics computing">
+          <div class="card-thumb gen"><span class="glyph">↑↓↑</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Python"></span> Python</div>
+            <h3><a href="https://github.com/samcaf/Ising" target="_blank" rel="noopener">Ising</a></h3>
+            <p>A Python toolbox for one-dimensional quantum spin chains: model Hamiltonians, operators, symmetries, spectra, and entanglement-entropy calculations for studying thermalization.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/Ising" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+              <span class="stars">★ 2</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- EWOCs -->
+        <article class="card reveal" data-tags="physics computing viz">
+          <div class="card-thumb contain"><img src="assets/projects/ewoc_lhc_eec.png" alt="Energy-weighted observable correlator spectrum" loading="lazy"></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Mathematica"></span> Mathematica · C++ · Python</div>
+            <h3>Energy-Weighted Observable Correlators</h3>
+            <p>Tools for energy-weighted differential cross sections between pairs of jet and subjet observables ("EWOCs"), isolating clean, calculable structure inside LHC events.</p>
+          </div>
+        </article>
+
+        <!-- JetMonteCarlo -->
+        <article class="card reveal" data-tags="physics computing">
+          <div class="card-thumb gen"><span class="glyph">MC</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Python"></span> Python</div>
+            <h3><a href="https://github.com/samcaf/JetMonteCarlo" target="_blank" rel="noopener">JetMonteCarlo</a></h3>
+            <p>Monte-Carlo tools for jet physics: phase-space integration and parton-shower algorithms at leading, leading-log, and modified-leading-log accuracy. The engine behind PIRANHA.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/JetMonteCarlo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+              <a href="https://arxiv.org/abs/2305.00989" target="_blank" rel="noopener">PIRANHA</a>
+              <span class="stars">★ 3</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShowerPy -->
+        <article class="card reveal" data-tags="physics computing">
+          <div class="card-thumb gen"><span class="glyph">⋔</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Python"></span> Python</div>
+            <h3><a href="https://github.com/samcaf/ShowerPy" target="_blank" rel="noopener">ShowerPy</a></h3>
+            <p>A lightweight Python library for parton showering — simulating the branching cascades of quarks and gluons that produce jets in high-energy collisions.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/ShowerPy" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- BeamDumpBSM -->
+        <article class="card reveal" data-tags="physics computing">
+          <div class="card-thumb gen"><span class="glyph">BSM</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Fortran"></span> Mathematica · Fortran</div>
+            <h3><a href="https://github.com/samcaf/BeamDumpBSM" target="_blank" rel="noopener">BeamDumpBSM</a></h3>
+            <p>Analytic, approximate, and Monte-Carlo tools for computing the production of beyond-the-Standard-Model particles at a high-energy muon beam dump, with FeynRules / MadGraph model generation.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/BeamDumpBSM" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- LibrarianFileManager -->
+        <article class="card reveal" data-tags="tools computing">
+          <div class="card-thumb gen"><span class="glyph">LFM</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Python"></span> Python · on PyPI</div>
+            <h3><a href="https://github.com/samcaf/LibrarianFileManager" target="_blank" rel="noopener">LibrarianFileManager</a></h3>
+            <p>General-purpose file-management tools for initializing, cataloging, and interacting with complex data and figure directories — a "librarian" for research projects. Published to PyPI.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/LibrarianFileManager" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+              <a href="https://pypi.org/project/LibrarianFileManager/" target="_blank" rel="noopener">PyPI</a>
+              <span class="stars">★ 2</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- planner -->
+        <article class="card reveal" data-tags="tools">
+          <div class="card-thumb gen"><span class="glyph">.pln</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-Python"></span> Python</div>
+            <h3><a href="https://github.com/samcaf/planner" target="_blank" rel="noopener">planner</a></h3>
+            <p>A terminal- and Vim-first planner and journal. Write structured plain-text <code>.pln</code> files, then compile them into a polished, mobile-friendly HTML dashboard — no database required.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/planner" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Thesis -->
+        <article class="card reveal" data-tags="physics">
+          <div class="card-thumb gen"><span class="glyph">PhD</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-TeX"></span> TeX</div>
+            <h3><a href="https://github.com/samcaf/Thesis" target="_blank" rel="noopener">Thesis</a></h3>
+            <p>Source and resources for my MIT Ph.D. thesis, <em>Particles Inside Particles: The Flow of Energy in Quarks, Gluons, and Jets</em>.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf/Thesis" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Code</a>
+              <a href="publications.html">Thesis details</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- LaTeX templates -->
+        <article class="card reveal" data-tags="tools">
+          <div class="card-thumb gen"><span class="glyph">TeX</span></div>
+          <div class="card-body">
+            <div class="card-lang"><span class="lang-dot lang-TeX"></span> TeX</div>
+            <h3><a href="https://github.com/samcaf?tab=repositories&q=template" target="_blank" rel="noopener">Academic LaTeX Templates</a></h3>
+            <p>Reusable LaTeX tooling I maintain for academic writing, including a <a href="https://github.com/samcaf/Mastery_Question_template" target="_blank" rel="noopener">mastery-question</a> template, plus other formats across my repositories.</p>
+            <div class="card-foot">
+              <a href="https://github.com/samcaf?tab=repositories" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Repos</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== NOTES ===================== -->
+  <section class="section" id="notes" style="border-top:1px solid var(--border);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Notes</div>
+        <h2 class="section-title">Lecture &amp; study notes</h2>
+        <p class="section-lead">Notes I've written over the years across quantum field theory, QCD, and mathematical
+          physics &mdash; shared in case they're useful, typeset with my own LaTeX notes template.</p>
+      </div>
+      <div class="grid grid-3">
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Quantum field theory</div>
+            <h3><a href="pdfs/notes/traditional/Unitarity.pdf" target="_blank" rel="noopener">Unitarity</a></h3>
+            <p>Unitarity, the optical theorem, and the constraints they place on scattering amplitudes in QFT.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/Unitarity.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Formal QFT</div>
+            <h3><a href="pdfs/notes/traditional/TTBar_Deformation.pdf" target="_blank" rel="noopener">TT̄ Deformation</a></h3>
+            <p>The irrelevant TT̄ deformation of two-dimensional quantum field theories and its solvable structure.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/TTBar_Deformation.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Supersymmetry</div>
+            <h3><a href="pdfs/notes/traditional/Supersymmetric_Quantum_Mechanics.pdf" target="_blank" rel="noopener">Supersymmetric Quantum Mechanics</a></h3>
+            <p>An introduction to supersymmetric quantum mechanics — the algebra, the superpotential, and worked examples.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/Supersymmetric_Quantum_Mechanics.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Mathematical physics</div>
+            <h3><a href="pdfs/notes/traditional/Basic_Grassmannian.pdf" target="_blank" rel="noopener">Basic Grassmannian</a></h3>
+            <p>Grassmann numbers and Berezin integration — the algebra that makes fermions work in path integrals.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/Basic_Grassmannian.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · QCD</div>
+            <h3><a href="pdfs/notes/traditional/Hadrons.pdf" target="_blank" rel="noopener">Hadrons</a></h3>
+            <p>The structure, classification, and phenomenology of hadrons as bound states of quarks and gluons.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/Hadrons.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Particle physics</div>
+            <h3><a href="pdfs/notes/traditional/Higgs.pdf" target="_blank" rel="noopener">The Higgs Mechanism</a></h3>
+            <p>Electroweak symmetry breaking and the Higgs mechanism — how gauge bosons and fermions get their mass.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/Higgs.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Cosmology</div>
+            <h3><a href="pdfs/notes/traditional/Cosmological_Collider_Physics.pdf" target="_blank" rel="noopener">Cosmological Collider Physics</a></h3>
+            <p>How heavy particles during inflation leave distinctive signatures in the primordial power spectrum.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/Cosmological_Collider_Physics.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Coursework</div>
+            <h3><a href="pdfs/notes/traditional/221C_Final_Project.pdf" target="_blank" rel="noopener">Physics 221C — Final Project</a></h3>
+            <p>A graduate-coursework final project write-up in advanced quantum mechanics.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/221C_Final_Project.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-body">
+            <div class="card-lang">PDF · Experimental / software</div>
+            <h3><a href="pdfs/notes/traditional/2018_CMS_Pipeline_Documentation.pdf" target="_blank" rel="noopener">CMS Pipeline Documentation</a></h3>
+            <p>Documentation for a CMS data-analysis pipeline I worked on in 2018.</p>
+            <div class="card-foot"><a href="pdfs/notes/traditional/2018_CMS_Pipeline_Documentation.pdf" target="_blank" rel="noopener">Open PDF <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></a></div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p>&copy; <span id="year">2026</span> Samuel Alipour-fard</p>
+      <div class="foot-links">
+        <a href="index.html">Home</a>
+        <a href="publications.html">Publications</a>
+        <a href="projects.html#notes">Notes</a>
+        <a href="https://github.com/samcaf" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

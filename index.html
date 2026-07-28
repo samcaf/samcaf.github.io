@@ -1,66 +1,500 @@
 <!DOCTYPE html>
-<html>
-   <!-- Page information -->
-  <head>
-    <title>Sam Alipour-fard</title>
-    <link rel="stylesheet" href="styles/style.css">
-  </head>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samuel Alipour-fard · Theoretical Physicist & Scientific Programmer</title>
+  <meta name="description" content="Samuel Alipour-fard — MIT Ph.D. in theoretical physics. I build tools that turn the physics of energy flow inside particles into things you can compute and see, spanning QFT, Monte-Carlo methods, and machine learning.">
+  <meta name="author" content="Samuel Alipour-fard">
 
-  <body>
-    <div class="header">
-      <h1>Sam Alipour-fard</h1>
-      <div class="link-container">
-        <a href="pages/about_me.html" alt="About Me">
-            <div class="link-box">
-                <div class="link-box-text">
-                    About Me
-                </div>
-            </div>
-        </a>
-        <a href="pdfs/cv.pdf" target="_blank" alt="CV">
-            <div class="link-box">
-                <div class="link-box-text">
-                    CV
-                </div>
-            </div>
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Samuel Alipour-fard · Theoretical Physicist & Scientific Programmer">
+  <meta property="og:description" content="MIT Ph.D. in theoretical physics — energy correlators, QCD, Monte-Carlo methods, and scientific computing.">
+  <meta property="og:url" content="https://samcaf.github.io/">
+
+  <link rel="icon" type="image/svg+xml" href="images/mark.svg">
+  <script>
+    document.documentElement.classList.add('js');
+    (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav">
+    <div class="wrap">
+      <a href="index.html" class="brand">
+        <img class="mark" src="images/mark.svg" alt="">
+        <span>Samuel Alipour-fard</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="projects.html#notes">Notes</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right">
+        <a class="btn btn-ghost" href="pdfs/cv.pdf" target="_blank" rel="noopener">CV</a>
+        <button class="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.5M12 19v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12H5M19 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        </button>
+        <button class="nav-toggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-body">
+          <div class="hero-status"><span class="dot"></span> MIT Ph.D. 2025 · open to research &amp; industry roles</div>
+          <h1>Samuel<br><span class="grad-text">Alipour-fard</span></h1>
+          <div class="subtitle">MIT Ph.D.<span class="sep">·</span>Theoretical Physics</div>
+          <p class="hero-lead">
+            I build tools that turn the physics of <strong>energy flow inside particles</strong> into
+            things you can compute and see &mdash; working across quantum field theory,
+            large-scale Monte-Carlo simulation, and machine learning. Between problems, I travel as much as I can.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#work">
+              View featured work
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="#contact">Get in touch</a>
+          </div>
+          <div class="tag-strip">
+            <span class="tag">Physics</span>
+            <span class="tag">Scientific Programming</span>
+            <span class="tag">AI &amp; Machine Learning</span>
+            <span class="tag">Travel</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orb"></div>
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- ambient spinning rings -->
+            <circle cx="200" cy="200" r="156" fill="none" stroke="var(--border-strong)" stroke-width="1" opacity="0.6"/>
+            <circle class="spin" cx="200" cy="200" r="150" fill="none" stroke="var(--accent-3)" stroke-width="1.6" stroke-linecap="round" pathLength="360" stroke-dasharray="1 5" opacity="0.55"/>
+            <circle class="spin-rev" cx="200" cy="200" r="98" fill="none" stroke="var(--accent-2)" stroke-width="1.6" stroke-linecap="round" pathLength="360" stroke-dasharray="1 7" opacity="0.5"/>
+
+            <!-- bound state: three colour-charged quarks pulled in by gluon springs -->
+            <g class="qcd-breathe">
+              <g class="qcd-spin">
+                <!-- red quark (up) -->
+                <g transform="rotate(-90 200 200)">
+                  <path class="gluon-spring" d="M214.0,200.0 L214.5,206.2 L213.9,211.8 L212.3,216.2 L210.0,219.0 L207.4,220.0 L204.7,219.0 L202.5,216.2 L200.9,211.8 L200.3,206.2 L200.8,200.0 L202.4,193.8 L205.2,188.2 L208.9,183.8 L213.3,181.0 L218.1,180.0 L222.9,181.0 L227.3,183.8 L231.1,188.2 L233.8,193.8 L235.5,200.0 L236.0,206.2 L235.4,211.8 L233.8,216.2 L231.5,219.0 L228.9,220.0 L226.2,219.0 L224.0,216.2 L222.4,211.8 L221.8,206.2 L222.2,200.0 L223.9,193.8 L226.7,188.2 L230.4,183.8 L234.8,181.0 L239.6,180.0 L244.4,181.0 L248.8,183.8 L252.6,188.2 L255.3,193.8 L257.0,200.0 L257.5,206.2 L256.9,211.8 L255.3,216.2 L253.0,219.0 L250.4,220.0 L247.7,219.0 L245.5,216.2 L243.9,211.8 L243.3,206.2 L243.7,200.0 L245.4,193.8 L248.2,188.2 L251.9,183.8 L256.3,181.0 L261.1,180.0 L265.9,181.0 L270.3,183.8 L274.1,188.2 L276.8,193.8 L278.5,200.0 L279.0,206.2 L278.4,211.8 L276.8,216.2 L274.5,219.0 L271.9,220.0 L269.2,219.0 L267.0,216.2 L265.4,211.8 L264.8,206.2 L265.2,200.0 L266.9,193.8 L269.7,188.2 L273.4,183.8 L277.8,181.0 L282.6,180.0 L287.4,181.0 L291.8,183.8 L295.6,188.2 L298.3,193.8 L300.0,200.0"/>
+                  <circle cx="315" cy="200" r="22" fill="#d98c96" opacity="0.18"/>
+                  <circle cx="315" cy="200" r="13" fill="#d98c96"/>
+                  <circle cx="315" cy="200" r="13" fill="none" stroke="#f0b9c0" stroke-width="1" opacity="0.7"/>
+                </g>
+                <!-- green quark (lower right) -->
+                <g transform="rotate(30 200 200)">
+                  <path class="gluon-spring" d="M214.0,200.0 L214.5,206.2 L213.9,211.8 L212.3,216.2 L210.0,219.0 L207.4,220.0 L204.7,219.0 L202.5,216.2 L200.9,211.8 L200.3,206.2 L200.8,200.0 L202.4,193.8 L205.2,188.2 L208.9,183.8 L213.3,181.0 L218.1,180.0 L222.9,181.0 L227.3,183.8 L231.1,188.2 L233.8,193.8 L235.5,200.0 L236.0,206.2 L235.4,211.8 L233.8,216.2 L231.5,219.0 L228.9,220.0 L226.2,219.0 L224.0,216.2 L222.4,211.8 L221.8,206.2 L222.2,200.0 L223.9,193.8 L226.7,188.2 L230.4,183.8 L234.8,181.0 L239.6,180.0 L244.4,181.0 L248.8,183.8 L252.6,188.2 L255.3,193.8 L257.0,200.0 L257.5,206.2 L256.9,211.8 L255.3,216.2 L253.0,219.0 L250.4,220.0 L247.7,219.0 L245.5,216.2 L243.9,211.8 L243.3,206.2 L243.7,200.0 L245.4,193.8 L248.2,188.2 L251.9,183.8 L256.3,181.0 L261.1,180.0 L265.9,181.0 L270.3,183.8 L274.1,188.2 L276.8,193.8 L278.5,200.0 L279.0,206.2 L278.4,211.8 L276.8,216.2 L274.5,219.0 L271.9,220.0 L269.2,219.0 L267.0,216.2 L265.4,211.8 L264.8,206.2 L265.2,200.0 L266.9,193.8 L269.7,188.2 L273.4,183.8 L277.8,181.0 L282.6,180.0 L287.4,181.0 L291.8,183.8 L295.6,188.2 L298.3,193.8 L300.0,200.0"/>
+                  <circle cx="315" cy="200" r="22" fill="#93c6a3" opacity="0.18"/>
+                  <circle cx="315" cy="200" r="13" fill="#93c6a3"/>
+                  <circle cx="315" cy="200" r="13" fill="none" stroke="#bfe3c9" stroke-width="1" opacity="0.7"/>
+                </g>
+                <!-- blue quark (lower left) -->
+                <g transform="rotate(150 200 200)">
+                  <path class="gluon-spring" d="M214.0,200.0 L214.5,206.2 L213.9,211.8 L212.3,216.2 L210.0,219.0 L207.4,220.0 L204.7,219.0 L202.5,216.2 L200.9,211.8 L200.3,206.2 L200.8,200.0 L202.4,193.8 L205.2,188.2 L208.9,183.8 L213.3,181.0 L218.1,180.0 L222.9,181.0 L227.3,183.8 L231.1,188.2 L233.8,193.8 L235.5,200.0 L236.0,206.2 L235.4,211.8 L233.8,216.2 L231.5,219.0 L228.9,220.0 L226.2,219.0 L224.0,216.2 L222.4,211.8 L221.8,206.2 L222.2,200.0 L223.9,193.8 L226.7,188.2 L230.4,183.8 L234.8,181.0 L239.6,180.0 L244.4,181.0 L248.8,183.8 L252.6,188.2 L255.3,193.8 L257.0,200.0 L257.5,206.2 L256.9,211.8 L255.3,216.2 L253.0,219.0 L250.4,220.0 L247.7,219.0 L245.5,216.2 L243.9,211.8 L243.3,206.2 L243.7,200.0 L245.4,193.8 L248.2,188.2 L251.9,183.8 L256.3,181.0 L261.1,180.0 L265.9,181.0 L270.3,183.8 L274.1,188.2 L276.8,193.8 L278.5,200.0 L279.0,206.2 L278.4,211.8 L276.8,216.2 L274.5,219.0 L271.9,220.0 L269.2,219.0 L267.0,216.2 L265.4,211.8 L264.8,206.2 L265.2,200.0 L266.9,193.8 L269.7,188.2 L273.4,183.8 L277.8,181.0 L282.6,180.0 L287.4,181.0 L291.8,183.8 L295.6,188.2 L298.3,193.8 L300.0,200.0"/>
+                  <circle cx="315" cy="200" r="22" fill="#93b3de" opacity="0.18"/>
+                  <circle cx="315" cy="200" r="13" fill="#93b3de"/>
+                  <circle cx="315" cy="200" r="13" fill="none" stroke="#bcd2f0" stroke-width="1" opacity="0.7"/>
+                </g>
+              </g>
+            </g>
+            <!-- steady bound-state core (fixed centre anchor, outside the oscillation) -->
+            <circle cx="200" cy="200" r="16" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+            <circle class="quark-core" cx="200" cy="200" r="7"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- stats -->
+      <div class="stats reveal">
+        <div class="stat"><div class="num grad-text">10+</div><div class="lbl">Open-source projects</div></div>
+        <div class="stat"><div class="num grad-text">10 yrs</div><div class="lbl">Research experience</div></div>
+        <div class="stat"><div class="num grad-text">10+</div><div class="lbl">Talks &amp; seminars</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURED WORK ===================== -->
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Featured work</div>
+        <h2 class="section-title">Research tools I built &mdash; and the physics behind them</h2>
+        <p class="section-lead">A few projects I'm most proud of. Each one takes an abstract idea in quantum
+          chromodynamics and turns it into open, reproducible software that produces real, interpretable pictures.</p>
+      </div>
+
+      <!-- Feature 1: RENC -->
+      <article class="feature reveal">
+        <div class="feature-media">
+          <span class="feature-badge">Flagship</span>
+          <video src="assets/media/RENC_Intro.mp4" autoplay muted loop playsinline poster="assets/projects/renc_bullseye_qcd.png"></video>
+        </div>
+        <div class="feature-body">
+          <div class="kicker">Python · Pythia 8 · CMS Open Data</div>
+          <h3>ResolvedEnergyCorrelators</h3>
+          <p>
+            A computational speed-up that broke records for N-particle energy correlations, turning
+            physics-rich QCD correlations into "bullseye" images you can read intuitively.
+          </p>
+          <div class="feature-meta">
+            <span class="chip accent">Energy correlators</span>
+            <span class="chip">Monte-Carlo</span>
+            <span class="chip">Data visualization</span>
+            <span class="chip">C++ / Python</span>
+          </div>
+          <div class="feature-links">
+            <a class="link-arrow" href="https://github.com/samcaf/ResolvedEnergyCorrelators" target="_blank" rel="noopener">
+              GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+            </a>
+            <a class="link-arrow" href="https://arxiv.org/abs/2410.16368" target="_blank" rel="noopener">arXiv:2410.16368</a>
+            <a class="link-arrow" href="https://arxiv.org/abs/2501.17218" target="_blank" rel="noopener">arXiv:2501.17218</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Feature 2: EWOCs -->
+      <article class="feature reverse reveal">
+        <div class="feature-media pad">
+          <img src="assets/projects/ewoc_lhc.png" alt="Energy-weighted observable correlations computed for LHC jets" loading="lazy">
+        </div>
+        <div class="feature-body">
+          <div class="kicker">C++ · Python · Mathematica</div>
+          <h3>Energy-Weighted Observable Correlators</h3>
+          <p>
+            A toolset for computing energy-weighted differential cross sections between pairs of jet and subjet
+            observables &mdash; correlations I playfully call <strong>EWOCs</strong>. Energy weighting lets us take
+            the physics we understand "more seriously" than the physics we don't, isolating clean, calculable
+            structure inside messy hadronic events at the LHC.
+          </p>
+          <div class="feature-meta">
+            <span class="chip accent">Jet substructure</span>
+            <span class="chip">Perturbative QCD</span>
+            <span class="chip">FastJet / Pythia</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Feature 3: JetMonteCarlo / PIRANHA -->
+      <article class="feature reveal">
+        <div class="feature-media pad" style="display:grid;place-items:center;min-height:300px;">
+          <svg viewBox="0 0 460 320" width="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- parton shower / grooming tree -->
+            <g fill="none" stroke-linecap="round">
+              <path d="M30 160 L150 160" stroke="var(--accent)" stroke-width="3"/>
+              <path d="M150 160 L250 100" stroke="var(--accent)" stroke-width="2.6"/>
+              <path d="M150 160 L250 220" stroke="var(--accent-2)" stroke-width="2.6"/>
+              <path d="M250 100 L340 70"  stroke="var(--accent)" stroke-width="2.2"/>
+              <path d="M250 100 L340 130" stroke="var(--accent-2)" stroke-width="2"/>
+              <path d="M250 220 L340 200" stroke="var(--accent-2)" stroke-width="2.2"/>
+              <path d="M250 220 L340 260" stroke="var(--accent-3)" stroke-width="2"/>
+              <path d="M340 70 L420 55"   stroke="var(--accent)" stroke-width="1.6"/>
+              <path d="M340 70 L420 92"   stroke="var(--accent)" stroke-width="1.6"/>
+              <path d="M340 130 L420 150" stroke="var(--accent-2)" stroke-width="2"/>
+              <path d="M340 260 L420 280" stroke="var(--accent-3)" stroke-width="2"/>
+            </g>
+            <g fill="var(--accent)">
+              <circle cx="30" cy="160" r="6"/>
+              <circle cx="150" cy="160" r="5"/>
+              <circle cx="250" cy="100" r="5" fill="var(--accent)"/>
+              <circle cx="250" cy="220" r="5" fill="var(--accent-2)"/>
+              <circle cx="420" cy="55" r="4" fill="var(--accent)"/>
+              <circle cx="420" cy="92" r="4" fill="var(--accent)"/>
+              <circle cx="340" cy="200" r="4" fill="var(--accent-2)"/>
+              <circle cx="420" cy="150" r="4" fill="var(--accent-2)"/>
+              <circle cx="420" cy="280" r="4" fill="var(--accent-3)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <div class="kicker">Python · Monte-Carlo · pQCD</div>
+          <h3>JetMonteCarlo &amp; PIRANHA</h3>
+          <p>
+            Python Monte-Carlo tools for jet physics &mdash; phase-space integration and parton-shower algorithms
+            accurate to leading and modified-leading-logarithmic order. This is the engine behind
+            <strong>PIRANHA</strong>, a continuous jet-grooming paradigm I introduced that smoothly removes
+            contamination from jets instead of making hard, discrete cuts.
+          </p>
+          <div class="feature-meta">
+            <span class="chip accent">Parton showers</span>
+            <span class="chip">Jet grooming</span>
+            <span class="chip">Resummation</span>
+          </div>
+          <div class="feature-links">
+            <a class="link-arrow" href="https://github.com/samcaf/JetMonteCarlo" target="_blank" rel="noopener">
+              GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+            </a>
+            <a class="link-arrow" href="https://arxiv.org/abs/2305.00989" target="_blank" rel="noopener">PIRANHA · arXiv:2305.00989</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="reveal" style="text-align:center;margin-top:52px;">
+        <a class="btn btn-ghost" href="projects.html">
+          Browse all projects
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       </div>
-      <nav>
-          <ul class="link-list">
-              <li>
-                <a href="pages/research.html" class="publications-link">
-                  <div class="link-icon"><img src="images/collision-circular.png" alt="particle icon"></div>
-                  <div class="link-text">Research</div>
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/samcaf/" target="_blank" class="github-link">
-                  <div class="link-icon"><img src="images/github-logo.png" alt="github logo"></div>
-                  <div class="link-text">GitHub</div>
-                </a>
-              </li>
-              <li>
-                <a href="pages/presentations.html" class="presentations-link">
-                  <div class="link-icon"><img src="images/slides.png" alt="slides icon"></div>
-                  <div class="link-text">Slides</div>
-                </a>
-              </li>
-              <li>
-                <a href="pages/notes.html" class="notes-link">
-                  <div class="link-icon"><img src="images/notes.png" alt="note icon"></div>
-                  <div class="link-text">Notes</div>
-                </a>
-              </li>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="section" id="about" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-body reveal">
+          <div class="eyebrow">About</div>
+          <h2 class="section-title" style="margin-bottom:26px;">Physicist, programmer, and perpetual student of the world</h2>
+          <p>
+            I recently finished my Ph.D. in theoretical physics at <strong>MIT</strong>, where I worked with
+            Jesse Thaler in the Center for Theoretical Physics on the unifying question of my Ph.D. research:
+            <strong>how does energy flow when you break apart the smallest known pieces of the universe?</strong>
+          </p>
+          <p>
+            My thesis, <em>Particles Inside Particles</em>, built the analytic and probabilistic foundations of
+            energy-correlator observables, derived the mathematics behind parton-shower simulations, and turned
+            those ideas into open-source software tested against real collider data. Along the way I've published
+            in <strong>Physical Review Letters</strong> and <strong>JHEP</strong>, and contributed to work on
+            superconducting-qubit noise and searches for physics beyond the Standard Model.
+          </p>
+          <p>
+            The common thread &mdash; probability, statistical inference, information theory, and computation at
+            scale &mdash; is what pulls me toward <strong>scientific programming and machine learning</strong>,
+            where the same toolkit finds new problems to solve. I also spent five years as a teaching assistant
+            at MIT (earning perfect evaluations in String Theory) and love making hard ideas feel obvious.
+          </p>
+          <p>
+            Outside of work you'll usually find me <strong>traveling</strong>, climbing, reading, or losing
+            gracefully at chess.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <div class="eyebrow">Trajectory</div>
+          <ul class="timeline" style="margin-top:22px;">
+            <li>
+              <div class="yr">2019 — 2025</div>
+              <div class="role">Ph.D., Theoretical Physics</div>
+              <div class="place">MIT · advisor Jesse Thaler · GPA 4.0</div>
+              <ul class="sub">
+                <li><span class="sy">2025</span> <em>Particles Inside Particles</em><span class="t2">Ph.D. thesis</span></li>
+                <li><span class="sy">2025</span> <em>New Angles on Energy Correlators</em><span class="t2">PRL</span></li>
+                <li><span class="sy">2025</span> <em>Energy Correlators Beyond Angles</em><span class="t2">JHEP</span></li>
+                <li><span class="sy">2025</span> <em>Qubit-State Purity Oscillations</em><span class="t2">PRA</span></li>
+                <li><span class="sy">2024</span> ResolvedEnergyCorrelators<span class="t2">code</span></li>
+                <li><span class="sy">2023</span> LibrarianFileManager<span class="t2">PyPI</span></li>
+                <li><span class="sy">2023</span> <em>PIRANHA continuous jet grooming</em><span class="t2">JHEP</span></li>
+                <li><span class="sy">2022</span> Ising — quantum spin-chain toolbox<span class="t2">code</span></li>
+                <li><span class="sy">2021</span> JetMonteCarlo<span class="t2">code</span></li>
+              </ul>
+            </li>
+            <li>
+              <div class="yr">2015 — 2019</div>
+              <div class="role">B.S. Physics, College of Creative Studies</div>
+              <div class="place">UC Santa Barbara · highest honors · GPA 4.0</div>
+              <ul class="sub">
+                <li><span class="sy">2020</span> <em>The Second Higgs at the Lifetime Frontier</em><span class="t2">JHEP</span></li>
+                <li><span class="sy">2019</span> <em>Long Live the Higgs Factory</em><span class="t2">Chin. Phys. C</span></li>
+                <li><span class="sy">2018</span> <em>The CLIC Potential for New Physics</em><span class="t2">CERN</span></li>
+                <li><span class="sy">2016–19</span> Long-lived particles &amp; biophysics research</li>
+              </ul>
+            </li>
           </ul>
-      </nav>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- <main> -->
+  <!-- ===================== PUBLICATIONS ===================== -->
+  <section class="section" id="publications">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Selected publications</div>
+        <h2 class="section-title">A few papers I'd point you to first</h2>
+        <p class="section-lead">Research isn't the whole story here &mdash; but it's where a lot of the ideas were
+          sharpened. The full list, including my thesis and talks, lives on the publications page.</p>
+      </div>
 
-	<!-- </main> -->
+      <ul class="pub-list reveal">
+        <li class="pub">
+          <div class="pub-year">2025<span class="pub-venue-tag">PRL</span></div>
+          <div>
+            <h3><a href="https://arxiv.org/abs/2410.16368" target="_blank" rel="noopener">New Angles on Energy Correlators</a></h3>
+            <div class="authors"><span class="me">S. Alipour-fard</span>, A. Budhraja, J. Thaler, W. Waalewijn</div>
+            <div class="venue">Phys. Rev. Lett. 134, 231902 (2025)</div>
+            <div class="pub-links">
+              <a href="https://doi.org/10.1103/l6nj-2gsh" target="_blank" rel="noopener">Journal</a>
+              <a href="https://arxiv.org/abs/2410.16368" target="_blank" rel="noopener">arXiv</a>
+              <a href="https://github.com/samcaf/ResolvedEnergyCorrelators" target="_blank" rel="noopener">Code</a>
+            </div>
+          </div>
+        </li>
+        <li class="pub">
+          <div class="pub-year">2025<span class="pub-venue-tag">JHEP</span></div>
+          <div>
+            <h3><a href="https://arxiv.org/abs/2501.17218" target="_blank" rel="noopener">Energy Correlators Beyond Angles</a></h3>
+            <div class="authors"><span class="me">S. Alipour-fard</span>, W. Waalewijn</div>
+            <div class="venue">JHEP 07 (2025) 043</div>
+            <div class="pub-links">
+              <a href="https://doi.org/10.1007/JHEP07(2025)043" target="_blank" rel="noopener">Journal</a>
+              <a href="https://arxiv.org/abs/2501.17218" target="_blank" rel="noopener">arXiv</a>
+              <a href="https://github.com/samcaf/ResolvedEnergyCorrelators" target="_blank" rel="noopener">Code</a>
+            </div>
+          </div>
+        </li>
+        <li class="pub">
+          <div class="pub-year">2025<span class="pub-venue-tag">PRA</span></div>
+          <div>
+            <h3><a href="https://arxiv.org/abs/2409.12303" target="_blank" rel="noopener">Qubit-State Purity Oscillations from Anisotropic Transverse Noise</a></h3>
+            <div class="authors">D. A. Rower <em>et al.</em> (incl. <span class="me">S. C. Alipour-Fard</span>), EQuS group, MIT</div>
+            <div class="venue">Phys. Rev. A 111, 032420 (2025)</div>
+            <div class="pub-links">
+              <a href="https://doi.org/10.1103/PhysRevA.111.032420" target="_blank" rel="noopener">Journal</a>
+              <a href="https://arxiv.org/abs/2409.12303" target="_blank" rel="noopener">arXiv</a>
+            </div>
+          </div>
+        </li>
+        <li class="pub">
+          <div class="pub-year">2023<span class="pub-venue-tag">JHEP</span></div>
+          <div>
+            <h3><a href="https://arxiv.org/abs/2305.00989" target="_blank" rel="noopener">PIRANHA: a Paradigm for Continuous Jet Grooming</a></h3>
+            <div class="authors"><span class="me">S. Alipour-fard</span>, P. T. Komiske, E. M. Metodiev, J. Thaler</div>
+            <div class="venue">JHEP 09 (2023) 157</div>
+            <div class="pub-links">
+              <a href="https://doi.org/10.1007/JHEP09(2023)157" target="_blank" rel="noopener">Journal</a>
+              <a href="https://arxiv.org/abs/2305.00989" target="_blank" rel="noopener">arXiv</a>
+              <a href="https://github.com/samcaf/JetMonteCarlo" target="_blank" rel="noopener">Code</a>
+            </div>
+          </div>
+        </li>
+        <li class="pub">
+          <div class="pub-year">2020<span class="pub-venue-tag">JHEP</span></div>
+          <div>
+            <h3><a href="https://arxiv.org/abs/1812.09315" target="_blank" rel="noopener">The Second Higgs at the Lifetime Frontier</a></h3>
+            <div class="authors"><span class="me">S. Alipour-fard</span>, N. Craig, S. Gori, S. Koren, D. Redigolo</div>
+            <div class="venue">JHEP 07 (2020) 029</div>
+            <div class="pub-links">
+              <a href="https://doi.org/10.1007/JHEP07(2020)029" target="_blank" rel="noopener">Journal</a>
+              <a href="https://arxiv.org/abs/1812.09315" target="_blank" rel="noopener">arXiv</a>
+            </div>
+          </div>
+        </li>
+      </ul>
 
-    <div class="footer">
-      <p>&copy; 2023 Samuel Alipour-fard</p>
+      <div class="reveal" style="margin-top:40px;">
+        <a class="btn btn-ghost" href="publications.html">
+          All publications, thesis &amp; talks
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
     </div>
-  </body>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section class="section" style="background:var(--surface);border-top:1px solid var(--border);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Toolkit</div>
+        <h2 class="section-title">What I work with</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card reveal">
+          <h4>Programming</h4>
+          <div class="skill-tags">
+            <span>Python</span><span>C++</span><span>Mathematica</span><span>Bash</span><span>LaTeX</span><span>Git</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <h4>Scientific computing &amp; ML</h4>
+          <div class="skill-tags">
+            <span>Monte-Carlo methods</span><span>Numerical simulation</span><span>Multi-parameter optimization</span><span>Analytic computation</span><span>Machine learning</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <h4>Physics &amp; mathematics</h4>
+          <div class="skill-tags">
+            <span>Quantum field theory</span><span>Effective field theory</span><span>Perturbative QCD</span><span>Statistical mechanics</span><span>Probability &amp; information theory</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <h4>Domains</h4>
+          <div class="skill-tags">
+            <span>Jet substructure</span><span>Energy correlators</span><span>Collider phenomenology</span><span>Quantum many-body</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section contact" id="contact">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow" style="justify-content:center;">Contact</div>
+        <h2 class="section-title">Let's talk</h2>
+        <p class="section-lead contact-lead">
+          I'm always happy to talk about physics, code, or interesting problems &mdash; whether it's research,
+          a role, or a collaboration. The fastest way to reach me is email.
+        </p>
+        <div class="social-row">
+          <a class="social" href="mailto:samuel.alipourfard@yahoo.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            Email
+          </a>
+          <a class="social" href="https://github.com/samcaf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.85 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.79.62-3.38-1.38-3.38-1.38-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+            GitHub
+          </a>
+          <a class="social" href="https://www.linkedin.com/in/samuel-alipour-fard-0614a1367" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.35c0-1.28-.02-2.92-1.78-2.92-1.78 0-2.05 1.39-2.05 2.83V21H9z"/></svg>
+            LinkedIn
+          </a>
+          <a class="social" href="https://inspirehep.net/literature?q=a%20Alipour-fard" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 0 0 18M12 3a15 15 0 0 1 0 18M3 12h18"/></svg>
+            INSPIRE-HEP
+          </a>
+          <a class="social" href="pdfs/cv.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+            CV
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="wrap">
+      <p>&copy; <span id="year">2026</span> Samuel Alipour-fard</p>
+      <div class="foot-links">
+        <a href="projects.html">Projects</a>
+        <a href="publications.html">Publications</a>
+        <a href="projects.html#notes">Notes</a>
+        <a href="https://github.com/samcaf" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
 </html>
