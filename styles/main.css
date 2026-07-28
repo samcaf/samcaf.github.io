@@ -214,6 +214,7 @@ h1, h2, h3, h4 {
 .brand { display: flex; align-items: center; gap: 11px; font-family: var(--font-display); font-weight: 600; font-size: 1.06rem; color: var(--text); letter-spacing: -0.01em; }
 .brand:hover { color: var(--text); }
 .brand .mark { width: 30px; height: 30px; flex: none; }
+.brand-short { display: none; }  /* mobile-only short name; desktop shows the full name */
 
 .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; margin: 0; padding: 0; }
 .nav-links a {
@@ -666,6 +667,8 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
   /* compact the nav so the brand + controls fit on narrow screens */
   .brand span { font-size: clamp(0.82rem, 3.6vw, 1.06rem); }
   .brand .mark { width: 26px; height: 26px; }
+  .brand-full { display: none; }
+  .brand-short { display: inline; }
   .nav-right { gap: 8px; }
   .nav-right .btn-ghost { padding: 9px 13px; font-size: 0.88rem; }
   .theme-toggle, .nav-toggle { width: 34px; height: 34px; }
