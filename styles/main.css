@@ -651,3 +651,27 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
   .row { grid-template-columns: 1fr; gap: 6px; }
   .hero .subtitle .sep.mobile-break { display: block; height: 0; }
 }
+
+/* ---------- Mobile: keep everything within the viewport (no horizontal scroll) ---------- */
+@media (max-width: 720px) {
+  /* clip stray horizontal overflow without breaking the sticky nav (clip keeps overflow-y visible) */
+  html, body { overflow-x: clip; }
+  /* let long unbreakable tokens (repo names, DOIs, long titles) wrap instead of spilling over */
+  h1, h2, h3, h4, p, li, a, span, em, strong, div { overflow-wrap: anywhere; }
+  .wrap { padding: 0 18px; }
+
+  /* name stays on its two lines and never overflows */
+  .hero h1 { font-size: clamp(1.9rem, 9vw, 2.6rem); line-height: 1.03; }
+
+  /* compact the nav so the brand + controls fit on narrow screens */
+  .brand span { font-size: clamp(0.82rem, 3.6vw, 1.06rem); }
+  .brand .mark { width: 26px; height: 26px; }
+  .nav-right { gap: 8px; }
+  .nav-right .btn-ghost { padding: 9px 13px; font-size: 0.88rem; }
+  .theme-toggle, .nav-toggle { width: 34px; height: 34px; }
+
+  /* trajectory sub-items wrap cleanly instead of running past the edge */
+  .timeline .sub li { flex-wrap: wrap; }
+  .timeline .sub .sy { min-width: 46px; }
+}
+
