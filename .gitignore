@@ -1,1 +1,5 @@
 TODO.md
+
+# Ask-assistant build tooling (local only; the served site stays dependency-free)
+node_modules/
+tools/.cache/
