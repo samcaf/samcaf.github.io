@@ -305,6 +305,10 @@ function stripMath(text) {
 function cleanTexTitle(s) {
   return String(s ?? '')
     .replace(/\\phantom\s*\{[^{}]*\}/g, ' ')
+    // \texorpdfstring{$\phi^3$}{phi-cubed} exists precisely to give a plain-text
+    // form for contexts that cannot set math — a citation label is one.
+    .replace(/\\texorpdfstring\s*\{(?:[^{}]|\{[^{}]*\})*\}\s*\{([^{}]*)\}/g, '$1')
+    .replace(/\\[()]|\$/g, ' ')
     .replace(/\\\\/g, ' ')
     .replace(/\\[a-zA-Z@]+\s*(?:\[[^\]]*\])?/g, ' ')
     .replace(/[{}|]/g, ' ')
@@ -312,21 +316,40 @@ function cleanTexTitle(s) {
     .trim();
 }
 
-/** Split a chapter .tex into {section, text} blocks, keeping headings. */
+/** Read a braced argument starting at `i` (the opening brace), balanced. */
+function braceArg(str, i) {
+  let depth = 0;
+  for (let j = i; j < str.length; j++) {
+    if (str[j] === '{') depth++;
+    else if (str[j] === '}' && !--depth) return [str.slice(i + 1, j), j + 1];
+  }
+  return [null, i];
+}
+
+/**
+ * Split a chapter .tex into {section, text} blocks, keeping headings.
+ *
+ * Matches `\section`, its starred form (the solutions appendix uses
+ * `\section*{Chapter 2}`), and `\Soln{title}{label}`, which marks each worked
+ * solution — that granularity is what makes a solution findable by its name.
+ * Titles are read with balanced braces because they nest (\texorpdfstring).
+ */
 function texSections(tex) {
   const chapter = (tex.match(/\\chapter(?:\[([^\]]*)\])?\{([\s\S]*?)\}\s*$/m) || []);
   const chapterTitle = cleanTexTitle(chapter[1] || chapter[2] || '');
 
   const out = [];
-  const re = /\\section(?:\[[^\]]*\])?\{([\s\S]*?)\}/g;
+  const re = /\\(?:section|Soln)\*?(?:\[[^\]]*\])?\s*\{/g;
   let m;
   let cursor = 0;
   let current = null;
   while ((m = re.exec(tex))) {
-    if (current) out.push({ section: current, tex: tex.slice(cursor, m.index) });
-    else out.push({ section: null, tex: tex.slice(cursor, m.index) });
-    current = cleanTexTitle(m[1]);
-    cursor = re.lastIndex;
+    const [title, end] = braceArg(tex, re.lastIndex - 1);
+    if (title == null) continue;
+    out.push({ section: current, tex: tex.slice(cursor, m.index) });
+    current = cleanTexTitle(title);
+    cursor = end;
+    re.lastIndex = end;
   }
   out.push({ section: current, tex: tex.slice(cursor) });
   return { chapterTitle, blocks: out };
@@ -610,7 +633,44 @@ async function arxivAbstracts(ids) {
 // and answer questions about work that isn't really Sam's. Add or remove ids here.
 const ABSTRACT_ONLY = new Set(['1812.02093']);
 
-/** Full text of each arXiv paper, chunked with page-level deep links. */
+/**
+ * arXiv serves every paper's LaTeX source, which is the only way to get its
+ * mathematics: pdftotext linearises equations into debris ("(E, ~ B) ~ → (B,
+ * ~ −E). ~") that no renderer can reconstruct. Falls back to the PDF when a
+ * submission has no usable source.
+ */
+async function paperTex(id) {
+  const key = id.replace('/', '_');
+  const dir = path.join(CACHE, 'eprint', key);
+  if (!existsSync(dir)) {
+    const archive = await cachedFetch(`https://arxiv.org/e-print/${id}`, `eprint/${key}.tar.gz`);
+    mkdirSync(dir, { recursive: true });
+    try {
+      execFileSync('tar', ['-xzf', archive, '-C', dir], { stdio: 'ignore' });
+    } catch {
+      // Single-file submissions are a bare gzipped .tex, not a tarball.
+      execFileSync('sh', ['-c', `gunzip -c ${JSON.stringify(archive)} > ${JSON.stringify(path.join(dir, 'main.tex'))}`]);
+    }
+  }
+  // Definitions hide in subdirectories — PIRANHA keeps its macros in
+  // includes/utils/piranha_utils.tex — so walk the tree for them, while taking
+  // *content* only from the top level, where the prose lives.
+  const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => {
+    const full = path.join(d, e.name);
+    if (e.isDirectory()) return walk(full);
+    return /\.(tex|sty)$/.test(e.name) ? [full] : [];
+  });
+  const read = (f) => readFileSync(f, 'utf8');
+  const all = walk(dir);
+  if (!all.length) return null;
+
+  const top = all.filter((f) => path.dirname(f) === dir && f.endsWith('.tex'));
+  const main = top.find((f) => /\\documentclass/.test(read(f))) ?? top[0] ?? all[0];
+  const content = [main, ...top.filter((f) => f !== main).sort()].map(read).join('\n\n');
+  return { content, macroSource: all.map(read).join('\n\n') };
+}
+
+/** Full text of each arXiv paper: LaTeX where possible, PDF where not. */
 async function paperFullText(pub, chunks) {
   if (!pub.arxiv) return;
   const id = pub.arxiv.replace(/v\d+$/, '');
@@ -618,6 +678,31 @@ async function paperFullText(pub, chunks) {
     console.log(`  ${id}: abstract only (large multi-author report)`);
     return;
   }
+  const loc = [pub.tag, pub.year].filter(Boolean).join(' ');
+  const macroKey = `arxiv:${id}`;
+
+  // --- preferred: the LaTeX source, which still has its equations -----------
+  try {
+    const src = await paperTex(id);
+    if (src) {
+      MACRO_SETS[macroKey] = paperMacros(src.macroSource, src.content);
+      const { chapterTitle, blocks } = texSections(src.content);
+      const before = chunks.length;
+      for (const b of blocks) {
+        const { prose, captions } = texToProse(b.tex);
+        const where = [loc, b.section || chapterTitle || null].filter(Boolean).join(' · ');
+        const source = { title: pub.title, url: pub.url, loc: where, m: macroKey };
+        pushChunks(chunks, prose, source);
+        for (const cap of captions) pushChunks(chunks, cap, { ...source, loc: `${where} · figure` });
+      }
+      console.log(`  ${id}: LaTeX source → ${chunks.length - before} chunks, ${Object.keys(MACRO_SETS[macroKey]).length} macros`);
+      return;
+    }
+  } catch (err) {
+    console.warn(`  ! ${id}: no usable LaTeX source (${err.message}); falling back to the PDF`);
+  }
+
+  // --- fallback: the PDF, whose math is already lost ------------------------
   let file;
   try {
     file = await cachedFetch(`https://arxiv.org/pdf/${id}`, `papers/${id.replace('/', '_')}.pdf`, { binary: true });
@@ -629,11 +714,9 @@ async function paperFullText(pub, chunks) {
   if (pages.length > 120) {
     console.warn(`  ! ${id}: ${pages.length} pages — consider adding it to ABSTRACT_ONLY, it will dominate the index`);
   }
-  const loc = [pub.tag, pub.year].filter(Boolean).join(' ');
   let kept = 0;
   pages.forEach((page, i) => {
     const text = unwrap(page);
-    // References sections are citation soup — they retrieve badly and read worse.
     if (/^\s*(references|bibliography)\b/i.test(text) && i > pages.length / 2) return;
     const before = chunks.length;
     pushChunks(chunks, text, {
@@ -643,7 +726,7 @@ async function paperFullText(pub, chunks) {
     });
     kept += chunks.length - before;
   });
-  console.log(`  ${id}: ${pages.length} pages → ${kept} chunks`);
+  console.log(`  ${id}: PDF → ${kept} chunks (math not recoverable)`);
 }
 
 /**
@@ -694,7 +777,7 @@ function parseMacros(tex) {
   }
 
   for (const name of BLOCKED_MACROS) delete out[name];
-  return { ...PHYSICS_PACKAGE, ...out };   // the preamble wins over the fallbacks
+  return out;   // shared fallbacks are merged at render time
 }
 
 // Captured from the preamble but meaningless (or harmful) inside math.
@@ -726,6 +809,18 @@ const PHYSICS_PACKAGE = {
   '\\ket': '\\left|#1\\right\\rangle',
   '\\braket': '\\left\\langle#1\\middle|#2\\right\\rangle',
   '\\order': '\\mathcal{O}',
+  // siunitx, used for measured quantities in the experimental papers
+  '\\SI': '#1\\,\\mathrm{#2}',
+  '\\si': '\\mathrm{#1}',
+  '\\num': '#1',
+  '\\micro': '\\mu',
+  '\\nano': '\\mathrm{n}',
+  '\\milli': '\\mathrm{m}',
+  '\\second': '\\mathrm{s}',
+  '\\hertz': '\\mathrm{Hz}',
+  '\\giga': '\\mathrm{G}',
+  '\\mega': '\\mathrm{M}',
+  '\\kelvin': '\\mathrm{K}',
   '\\cross': '\\times',
   '\\dv': '\\frac{\\mathrm{d}#1}{\\mathrm{d}#2}',
   '\\pdv': '\\frac{\\partial#1}{\\partial#2}',
@@ -748,11 +843,34 @@ const THESIS = {
     ['chapters/4-substructure.tex', 'Ch. 4'],
     ['chapters/5-event_shapes.tex', 'Ch. 5'],
     ['chapters/conclusion.tex', 'Conclusion'],
+    // 131 KB of worked solutions — a chapter's worth of content, and the part
+    // a reader is most likely to search for by name.
+    ['backmatter/solutions.tex', 'Solutions'],
+    ['frontmatter/prerequisites.tex', 'Prerequisites'],
+    ['frontmatter/acknowledgements.tex', 'Acknowledgements'],
   ],
   macroFiles: ['includes/thesis_utils.tex', 'includes/paper_preamble.tex'],
 };
 
+/**
+ * A document that writes `\le(x\ri)` means \left/\right, not "less than or
+ * equal". Where the source uses \ri without defining it, supply both — mapping
+ * only \ri would leave a \right with no \left and fail every such span.
+ */
+function paperMacros(macroSource, content) {
+  const macros = parseMacros(macroSource);
+  if (!macros['\\ri'] && /\\ri[)\]}\s]/.test(content)) {
+    macros['\\le'] = '\\left';
+    macros['\\ri'] = '\\right';
+  }
+  return macros;
+}
+
 /** Pull the thesis macro definitions into rag/macros.json for the renderer. */
+// Macro sets are per document: papers define their own shorthand, and two of
+// them may define the same command differently.
+const MACRO_SETS = { _shared: PHYSICS_PACKAGE };
+
 async function writeMacros() {
   const macros = {};
   for (const rel of THESIS.macroFiles) {
@@ -763,10 +881,17 @@ async function writeMacros() {
       console.warn(`  ! macros from ${rel}: ${err.message}`);
     }
   }
-  mkdirSync(RAG, { recursive: true });
-  writeFileSync(path.join(RAG, 'macros.json'), JSON.stringify(macros));
-  console.log(`  wrote rag/macros.json — ${Object.keys(macros).length} macros`);
+  MACRO_SETS.thesis = macros;
+  console.log(`    thesis macros: ${Object.keys(macros).length}`);
   return macros;
+}
+
+/** Write every document's macro set once all sources have been read. */
+function writeMacroSets() {
+  mkdirSync(RAG, { recursive: true });
+  writeFileSync(path.join(RAG, 'macros.json'), JSON.stringify(MACRO_SETS));
+  const total = Object.values(MACRO_SETS).reduce((n, m) => n + Object.keys(m).length, 0);
+  console.log(`  wrote rag/macros.json — ${total} macros across ${Object.keys(MACRO_SETS).length} sets`);
 }
 
 async function thesisChunks(chunks) {
@@ -790,9 +915,9 @@ async function thesisChunks(chunks) {
       const where = b.section
         ? `${label} · ${b.section}`
         : [label, chapterTitle && chapterTitle !== label ? chapterTitle : null].filter(Boolean).join(' · ');
-      pushChunks(chunks, prose, { title: THESIS.title, url: THESIS.url, loc: where });
+      pushChunks(chunks, prose, { title: THESIS.title, url: THESIS.url, loc: where, m: 'thesis' });
       for (const cap of captions) {
-        pushChunks(chunks, cap, { title: THESIS.title, url: THESIS.url, loc: `${where} · figure` });
+        pushChunks(chunks, cap, { title: THESIS.title, url: THESIS.url, loc: `${where} · figure`, m: 'thesis' });
       }
     }
     console.log(`    ${label} ${chapterTitle ? `“${chapterTitle}”` : ''} → ${chunks.length - before} chunks`);
@@ -815,6 +940,7 @@ async function buildPublications() {
   }
   for (const p of pubs) await paperFullText(p, chunks);
   await thesisChunks(chunks);
+  writeMacroSets();
 
   for (const s of sections(html, 'publications.html')) {
     if (/pub-list/.test(s.html)) continue; // covered per-paper above

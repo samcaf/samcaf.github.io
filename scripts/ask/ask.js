@@ -227,7 +227,7 @@ function showStatus(title, detail, { progress = null, error = false } = {}) {
 function sourceCard(hit, n, collapsed = false) {
   const card = el('div', 'ask-src');
   const quote = el('p', 'ask-src-quote');
-  renderMath(quote, hit.chunk.text);   // async; falls back to the LaTeX source
+  renderMath(quote, hit.chunk.text, hit.chunk.source.m);   // async; falls back to the source
   card.appendChild(quote);
 
   const more = el('button', 'ask-src-more', 'Show full excerpt');

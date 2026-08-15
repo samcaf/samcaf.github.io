@@ -39,18 +39,25 @@ export function hasMath(text) {
 /**
  * Replace `el`'s contents with `text`, typesetting any math it contains.
  * Plain text goes in as text nodes — only KaTeX's own output is ever markup.
+ *
+ * `macroKey` names the document the passage came from. Each paper and the
+ * thesis define their own shorthand, and two of them can define the same
+ * command differently, so the definitions have to travel with the text.
  */
-export async function renderMath(el, text) {
+export async function renderMath(el, text, macroKey) {
   if (!hasMath(text)) { el.textContent = text; return; }
 
   let katex;
-  let macros;
+  let sets;
   try {
-    [katex, macros] = await load();
+    [katex, sets] = await load();
   } catch {
     el.textContent = text;   // renderer unavailable: show the source
     return;
   }
+
+  // Shared stand-ins for package commands, overridden by the document's own.
+  const macros = { ...(sets._shared ?? {}), ...(sets[macroKey] ?? {}) };
 
   const frag = document.createDocumentFragment();
   let last = 0;

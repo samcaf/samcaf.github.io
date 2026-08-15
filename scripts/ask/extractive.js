@@ -87,7 +87,7 @@ export async function extractiveAnswer({ index, hits, queryVec, max = 3 }) {
       if (text.length < MIN_CHARS || text.length > MAX_CHARS) continue;
       if (!/[a-z]{3}/.test(text)) continue;                 // skip equation debris
       if (isGarbled(text) || !isSentence(text)) continue;
-      candidates.push({ text, n: i + 1, order: candidates.length });
+      candidates.push({ text, n: i + 1, m: hit.chunk.source.m, order: candidates.length });
     }
   });
   if (!candidates.length) return [];
@@ -118,5 +118,5 @@ export async function extractiveAnswer({ index, hits, queryVec, max = 3 }) {
   }
 
   // Read in the order the sources present them, not in score order.
-  return picked.sort((a, b) => a.order - b.order).map(({ text, n }) => ({ text, n }));
+  return picked.sort((a, b) => a.order - b.order).map(({ text, n, m }) => ({ text, n, m }));
 }
