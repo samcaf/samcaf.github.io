@@ -1,0 +1,447 @@
+/* =============================================================
+   Ask — page-scoped assistant (floating bar → panel / bottom sheet)
+   Inherits the site's design tokens, so both themes come for free.
+   ============================================================= */
+
+.ask {
+  --ask-w: 420px;
+  font-family: var(--font-body);
+}
+
+/* ---------- Floating bar ---------- */
+.ask-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(92vw, 460px);
+  padding: 11px 14px 11px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-mid);
+  font: inherit;
+  font-size: 0.94rem;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+.ask-bar:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  transform: translateX(-50%) translateY(-2px);
+}
+.ask-bar:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.ask-bar .ask-spark { width: 17px; height: 17px; flex: none; color: var(--accent); }
+.ask-bar-hint { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ask-bar kbd {
+  flex: none;
+  padding: 2px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+.ask[data-state="open"] .ask-bar { opacity: 0; pointer-events: none; }
+
+/* ---------- Scrim ---------- */
+.ask-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  background: rgba(3, 4, 9, 0.5);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s var(--ease);
+}
+.ask[data-state="open"] .ask-scrim { opacity: 1; pointer-events: auto; }
+
+/* ---------- Panel (desktop: right sidebar) ---------- */
+.ask-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 220;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--ask-w), 100vw);
+  height: 100dvh;
+  border-left: 1px solid var(--border);
+  background: var(--bg);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(100%);
+  transition: transform 0.34s var(--ease);
+}
+.ask[data-state="open"] .ask-panel { transform: none; }
+
+.ask-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.ask-head .eyebrow { margin-bottom: 4px; }
+.ask-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.16rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text);
+}
+.ask-head p { margin: 6px 0 0; font-size: 0.82rem; line-height: 1.5; color: var(--text-dim); }
+.ask-close {
+  flex: none;
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.ask-close:hover { color: var(--text); border-color: var(--border-strong); }
+.ask-close svg { width: 16px; height: 16px; }
+
+.ask-body { flex: 1; overflow-y: auto; padding: 16px 18px 22px; }
+
+/* ---------- Concept galaxy ---------- */
+.ask-galaxy {
+  margin: 0 0 16px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background:
+    radial-gradient(70% 90% at 50% 45%, rgba(139, 157, 255, 0.10), transparent 70%),
+    var(--card);
+  overflow: hidden;
+}
+.ask-galaxy canvas {
+  display: block;
+  width: 100%;
+  height: 190px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.ask-galaxy canvas:active { cursor: grabbing; }
+.ask-galaxy figcaption {
+  padding: 8px 11px 10px;
+  border-top: 1px solid var(--border);
+  font-size: 0.71rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.ask-concept {
+  padding: 12px 13px;
+  margin-bottom: 16px;
+  border: 1px solid var(--accent-2);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+}
+.ask-concept h4 {
+  margin: 0 0 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.ask-concept p { margin: 0 0 10px; font-size: 0.82rem; line-height: 1.6; color: var(--text-mid); }
+.ask-concept-go {
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--accent-2);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.ask-concept-go:hover { border-color: var(--accent-2); background: rgba(86, 217, 224, 0.08); }
+
+/* ---------- Idle / suggestions ---------- */
+.ask-intro { font-size: 0.88rem; line-height: 1.6; color: var(--text-mid); margin: 0 0 14px; }
+.ask-sugg-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 9px;
+}
+.ask-sugg { display: flex; flex-wrap: wrap; gap: 8px; }
+.ask-sugg button {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text-mid);
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.ask-sugg button:hover { color: var(--text); border-color: var(--accent); transform: translateY(-1px); }
+
+/* ---------- Status (model load / search) ---------- */
+.ask-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  font-size: 0.83rem;
+  color: var(--text-mid);
+  margin-bottom: 16px;
+}
+.ask-status b { color: var(--text); font-weight: 600; }
+.ask-status small { color: var(--text-dim); font-size: 0.76rem; line-height: 1.5; }
+.ask-progress { height: 5px; border-radius: 99px; background: var(--surface); overflow: hidden; }
+.ask-progress i { display: block; height: 100%; width: 0; background: var(--grad); transition: width 0.3s var(--ease); }
+.ask-error { border-color: rgba(255, 120, 120, 0.4); color: #ffb0b0; }
+
+/* ---------- Zones ---------- */
+.ask-zone { margin-bottom: 20px; }
+.ask-zone-head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+.ask-zone-head h3 {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.ask-zone-note { font-size: 0.74rem; color: var(--text-dim); line-height: 1.45; }
+
+/* Sources: verbatim, never model-generated */
+.ask-src {
+  position: relative;
+  padding: 12px 13px 12px 15px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-2);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+}
+.ask-src-quote {
+  margin: 0 0 9px;
+  font-size: 0.84rem;
+  line-height: 1.62;
+  color: var(--text-mid);
+  white-space: pre-wrap;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+}
+.ask-src.expanded .ask-src-quote { -webkit-line-clamp: unset; }
+.ask-src-more {
+  border: 0;
+  padding: 0;
+  margin: 0 0 9px;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.76rem;
+  cursor: pointer;
+}
+.ask-src-more:hover { text-decoration: underline; }
+.ask-cite {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.ask-cite-n {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--accent-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-align: center;
+}
+.ask-cite a { color: var(--text-mid); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+.ask-cite a:hover { color: var(--accent); border-color: var(--accent); }
+.ask-cite-loc { color: var(--text-dim); }
+
+/* Synthesis: model-generated, visually distinct from quotes */
+.ask-synth {
+  padding: 13px 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, rgba(139, 157, 255, 0.05), transparent);
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--text-mid);
+}
+.ask-synth-pending { color: var(--text-dim); font-size: 0.82rem; }
+
+/* ---------- Composer ---------- */
+.ask-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.ask-input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+}
+.ask-input::placeholder { color: var(--text-dim); }
+.ask-input:focus { outline: none; border-color: var(--accent); }
+.ask-send {
+  flex: none;
+  width: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: var(--grad);
+  color: var(--accent-ink);
+  cursor: pointer;
+  transition: opacity 0.2s var(--ease);
+}
+.ask-send:disabled { opacity: 0.45; cursor: default; }
+.ask-send svg { width: 17px; height: 17px; }
+.ask-foot {
+  padding: 0 14px 12px;
+  background: var(--surface);
+  font-size: 0.71rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+/* ---------- Mobile: bottom sheet ---------- */
+@media (max-width: 720px) {
+  .ask-bar { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); padding: 10px 13px; font-size: 0.88rem; }
+  .ask-bar kbd { display: none; }
+
+  .ask-panel {
+    top: auto;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: min(90dvh, 90vh);
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    transform: translateY(100%);
+  }
+  .ask-grip {
+    display: block;
+    width: 38px;
+    height: 4px;
+    margin: 9px auto 0;
+    border-radius: 99px;
+    background: var(--border-strong);
+  }
+  .ask-head { padding-top: 12px; }
+}
+.ask-grip { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ask-bar, .ask-panel, .ask-scrim, .ask-progress i { transition: none; }
+}
+
+.ask-weak {
+  border-color: var(--accent-3);
+  color: var(--text-mid);
+  font-size: 0.8rem;
+}
+
+/* ---------- Synthesis (generated prose, kept visually apart from quotes) ---------- */
+.ask-synth-text {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+.ask-synth-caveat {
+  margin: 10px 0 0;
+  padding-top: 9px;
+  border-top: 1px dashed var(--border-strong);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.ask-synth .ask-progress { margin-top: 9px; }
+
+/* Collapsed sources: citation line only, click or Enter to reveal the quote. */
+.ask-src--min {
+  padding: 9px 11px 9px 13px;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.ask-src--min .ask-src-quote,
+.ask-src--min .ask-src-more { display: none; }
+.ask-src--min:hover,
+.ask-src--min:focus-visible { border-left-color: var(--accent); background: var(--card-hover); }
+.ask-src--min:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ask-src--min .ask-cite::after {
+  content: "＋";
+  grid-column: 2;
+  justify-self: end;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+
+/* Extractive answer: quoted sentences with their source number. */
+.ask-synth-cite {
+  color: var(--accent-2);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+.ask-synth-upgrade {
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px dashed var(--border-strong);
+}
+.ask-synth-upgrade .ask-synth-pending { margin: 0 0 9px; }
+
+/* ---------- Math ---------- */
+.ask-math { font-size: 1.02em; }
+.ask-math--display {
+  display: block;
+  margin: 8px 0;
+  overflow-x: auto;      /* long equations scroll rather than break the panel */
+  overflow-y: hidden;
+  padding-bottom: 2px;
+}
+.ask-math math { color: var(--text); }
+/* KaTeX emits an accessibility duplicate; MathML output is what we display. */
+.ask-math .katex-html { display: none; }
