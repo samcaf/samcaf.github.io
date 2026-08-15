@@ -9,7 +9,7 @@ tools/.cache/
 
 # Vendored third-party runtimes and model weights (~63 MB). Reproducible, so
 # they stay out of git history:
-#   scripts/ask/vendor/  -> npm i @huggingface/transformers @mlc-ai/web-llm katex
+#   scripts/ask/vendor/  -> npm i @huggingface/transformers katex
 #                           (copy dist bundles + onnxruntime .wasm)
 #   assets/models/       -> Xenova/bge-small-en-v1.5 (config, tokenizer, onnx/q8)
 assets/models/

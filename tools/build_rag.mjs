@@ -920,11 +920,6 @@ function writeManifest() {
     version: 2,
     embedding: EMBED,
     chunking: CHUNK,
-    generator: {
-      note: 'WebLLM prebuilt ids — provisional until wired up in the generation milestone.',
-      primary: 'Qwen3-1.7B-q4f16_1-MLC',
-      small: 'Qwen3-0.6B-q4f16_1-MLC',
-    },
     // One index for the whole site; the per-corpus files are its inputs.
     corpus: { file: 'rag/all.json', vectors: 'rag/all.vec', pages: ['index.html', 'publications.html', 'projects.html'] },
     parts: ['rag/cv.json', 'rag/publications.json', 'rag/notes.json'],

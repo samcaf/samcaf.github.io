@@ -12,7 +12,6 @@
 import { loadIndex, search, loadEmbedder, isEmbedderReady } from './retrieval.js';
 import { createGalaxy } from './galaxy.js';
 import { prepareGraph, activate } from './graphboost.js';
-import { capability, loadEngine, isEngineReady, streamAnswer, MODELS } from './generate.js';
 import { extractiveAnswer } from './extractive.js';
 import { renderMath, hasMath, preloadMath } from './math.js';
 
@@ -301,8 +300,8 @@ function showResults(hits, weak = false) {
 
   const synth = el('div', 'ask-zone');
   const shead = el('div', 'ask-zone-head');
-  shead.appendChild(el('h3', null, 'Synthesis'));
-  shead.appendChild(el('span', 'ask-zone-note', 'generated'));
+  shead.appendChild(el('h3', null, 'Answer'));
+  shead.appendChild(el('span', 'ask-zone-note', 'quoted, not paraphrased'));
   synth.appendChild(shead);
   const box = el('div', 'ask-synth');
   synth.appendChild(box);
@@ -314,21 +313,20 @@ function showResults(hits, weak = false) {
 
 /* ---------------- synthesis ---------------- */
 
-const AUTO_KEY = 'ask:auto-synthesis';
-let cap = null;                                  // cached capability probe
-const autoOn = () => { try { return localStorage.getItem(AUTO_KEY) === '1'; } catch { return false; } };
-const setAuto = (v) => { try { localStorage.setItem(AUTO_KEY, v ? '1' : '0'); } catch {} };
-
 /**
- * The model is a big download, so it is never fetched behind the visitor's
- * back: the first answer is opt-in and the choice is remembered. Where WebGPU
- * is unavailable the quotes above are the whole feature, which is why they are
- * rendered first and in full.
+ * The answer is extractive: the search embedder ranks the sentences inside the
+ * retrieved passages and the best few are quoted verbatim, with the number of
+ * the source they came from.
+ *
+ * There is deliberately no language model here. A small one that fits in a
+ * browser paraphrases badly — it misspelled names that were sitting in front of
+ * it and cited excerpts that did not exist — and buys nothing this does not
+ * already give: the sentences are the author's, so a citation is exact by
+ * construction and nothing can be hallucinated, only missed.
  */
 async function renderSynthesis(box, hits, queryVec) {
-  // The zero-download answer first: it needs nothing the search did not already
-  // load, so every visitor gets one immediately.
   box.replaceChildren(el('p', 'ask-synth-pending', 'Reading the passages…'));
+
   let picked = [];
   try {
     picked = await extractiveAnswer({ index: await indexPromise, hits, queryVec });
@@ -337,74 +335,27 @@ async function renderSynthesis(box, hits, queryVec) {
   }
 
   box.replaceChildren();
-  if (picked.length) {
-    const p = el('p', 'ask-synth-text');
-    picked.forEach((s, i) => {
-      if (i) p.appendChild(document.createTextNode(' '));
-      if (hasMath(s.text)) {
-        const span = el('span');
-        renderMath(span, s.text + ' ');
-        p.appendChild(span);
-      } else {
-        p.appendChild(document.createTextNode(s.text + ' '));
-      }
-      p.appendChild(el('span', 'ask-synth-cite', `[${s.n}]`));
-    });
-    box.appendChild(p);
-    box.appendChild(el('p', 'ask-synth-caveat',
-      'Assembled from the passages above — the sentences that best match your question, quoted exactly and in their original order. Nothing here is paraphrased.'));
-  } else {
-    box.appendChild(el('p', 'ask-synth-pending', 'No single passage answers this directly — the sources above are the closest material.'));
+  if (!picked.length) {
+    box.appendChild(el('p', 'ask-synth-pending',
+      'No single passage answers this directly — the sources above are the closest material.'));
+    return;
   }
 
-  if (isEngineReady() || autoOn()) return runSynthesis(box, hits);
-  box.appendChild(offerModel(box, hits));
-}
-
-/** Optional upgrade: real prose, at the cost of a large one-time download. */
-function offerModel(box, hits) {
-  const wrap = el('div', 'ask-synth-upgrade');
-  const slow = cap?.mode === 'cpu';
-  wrap.appendChild(el('p', 'ask-synth-pending', slow
-    ? `Prefer it rewritten as prose? A small language model can do that on your CPU — ${cap.model.download} to download once, then roughly half a minute per answer. It paraphrases, so check it against the quotes.`
-    : `Prefer it rewritten as prose? ${cap?.model?.label ?? 'A small model'} can do that on your GPU — ${cap?.model?.download ?? ''} to download once. It paraphrases, so check it against the quotes.`));
-  const go = el('button', 'ask-concept-go', 'Rewrite as prose');
-  go.type = 'button';
-  go.addEventListener('click', () => { setAuto(true); runSynthesis(box, hits); });
-  wrap.appendChild(go);
-  return wrap;
-}
-
-async function runSynthesis(box, hits) {
-  cap ??= await capability();
-  const status = el('p', 'ask-synth-pending', 'Loading the model…');
-  const bar = el('div', 'ask-progress');
-  const fill = el('i');
-  bar.appendChild(fill);
-  box.replaceChildren(status, bar);
-
-  try {
-    const engine = await loadEngine(cap.model, cap.mode, ({ fraction, text }) => {
-      fill.style.width = `${Math.round((fraction || 0) * 100)}%`;
-      if (text) status.textContent = text;
-    });
-
-    const out = el('p', 'ask-synth-text');
-    box.replaceChildren(out);
-    await streamAnswer({
-      engine,
-      question: input.value,
-      hits,
-      onToken: (t) => { out.textContent += t; keepAtBottom(); },
-    });
-    if (!out.textContent.trim()) out.textContent = 'The model returned nothing. The quoted passages above still stand.';
-    box.appendChild(el('p', 'ask-synth-caveat',
-      `Written by ${cap.model.label} running in your browser, from the excerpts above. Check it against them.`));
-  } catch (err) {
-    console.error('[ask] synthesis', err);
-    box.replaceChildren(el('p', 'ask-synth-pending',
-      `The model could not run: ${err?.message ?? err}. The quoted passages above are unaffected.`));
-  }
+  const p = el('p', 'ask-synth-text');
+  picked.forEach((s, i) => {
+    if (i) p.appendChild(document.createTextNode(' '));
+    if (hasMath(s.text)) {
+      const span = el('span');
+      renderMath(span, s.text + ' ');
+      p.appendChild(span);
+    } else {
+      p.appendChild(document.createTextNode(s.text + ' '));
+    }
+    p.appendChild(el('span', 'ask-synth-cite', `[${s.n}]`));
+  });
+  box.appendChild(p);
+  box.appendChild(el('p', 'ask-synth-caveat',
+    'Assembled from the passages above — the sentences that best match your question, quoted exactly and in their original order. Nothing here is paraphrased.'));
 }
 
 /* ---------------- query flow ---------------- */

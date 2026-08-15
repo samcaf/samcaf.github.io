@@ -2,10 +2,9 @@
   "name": "samcaf-site-tools",
   "private": true,
   "type": "module",
-  "description": "Offline index builder for the site's Ask assistant (writes rag/*.json). Local tooling only — the served site has no dependencies and no build step.",
+  "description": "Offline index builder for the site's Ask assistant (writes rag/*.json). Local tooling only — the served site has no build step.",
   "dependencies": {
     "@huggingface/transformers": "^3.4.0",
-    "@mlc-ai/web-llm": "^0.2.84",
     "katex": "^0.18.4"
   }
 }

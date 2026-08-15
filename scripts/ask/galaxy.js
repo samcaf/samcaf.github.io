@@ -213,7 +213,14 @@ export function createGalaxy(canvas, { onSelect } = {}) {
   }, { threshold: 0.01 });
   io.observe(canvas);
 
-  loadGraph().then((g) => { graph = g; resize(); if (!raf) raf = requestAnimationFrame(frame); });
+  loadGraph().then((g) => {
+    graph = g;
+    resize();
+    draw();   // one frame now: requestAnimationFrame is starved in a hidden or
+              // backgrounded tab, and a galaxy that only paints inside the loop
+              // would sit blank there until the tab is focused
+    if (!raf) raf = requestAnimationFrame(frame);
+  });
 
   return {
     get graph() { return graph; },

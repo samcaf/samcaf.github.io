@@ -16,11 +16,6 @@
     "min": 140,
     "overlapSentences": 1
   },
-  "generator": {
-    "note": "WebLLM prebuilt ids — provisional until wired up in the generation milestone.",
-    "primary": "Qwen3-1.7B-q4f16_1-MLC",
-    "small": "Qwen3-0.6B-q4f16_1-MLC"
-  },
   "corpus": {
     "file": "rag/all.json",
     "vectors": "rag/all.vec",
