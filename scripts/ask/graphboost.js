@@ -17,19 +17,26 @@ const WIDE = 24;        // passages consulted for concept activation
 const MAX_ACTIVE = 10;   // concepts lit at once
 const MIN_SUPPORT = 1.2; // ≈ named in the query, or present in 2+ top passages
 /*
- * Measured concept-similarity distributions (bge-small, this graph):
- *   on-point   "optical theorem" → 0.863, next best 0.667
- *              "optimal transport in grooming" → PIRANHA 0.705, continuous grooming 0.703
- *   no match   "supersymmetric quantum mechanics" → best is 0.673 (conformal
- *              symmetry, QCD) — all wrong; the glossary has no SUSY-QM concept
- * So an on-point concept clears ~0.70 while the best-of-a-bad-lot sits ~0.67.
- * The floor is absolute on purpose: a relative-to-best rule always keeps a
- * winner, however irrelevant, which is exactly the "lights up when nothing is
- * relevant" failure. Fitted to a handful of probes — retune with the sweep in
- * tools/eval_gate.mjs if the galaxy goes dark too often.
+ * Concept similarity lives in the *query* regime, not the concept-name regime.
+ * A natural-language question ("what did your PhD research cover?") embeds only
+ * ~0.45–0.57 against a short concept phrase — the BGE query prefix shifts it —
+ * even when the concept is dead-on. Measured on this graph:
+ *   on-topic    "what did your PhD research cover?" → best 0.568 (QCD, QFT, …)
+ *   borderline  "how do I tune a guitar?"           → best 0.466 (weak retrieval)
+ *   off-topic   "best way to cook pasta?"           → retrieval returns nothing
+ * An earlier calibration used concept-*name* probes, which sit at 0.7–0.86, and
+ * so set a 0.68 floor no real question could clear — the galaxy only ever lit
+ * concepts that were named verbatim.
+ *
+ * SIM_GATE decides whether *anything* is on-topic (the single best non-named
+ * concept must reach it); above that a mostly-relative cutoff keeps the close
+ * ones. Going fully dark is still correct when nothing clears the gate — and
+ * retrieval already rejects the truly off-topic before we get here.
+ * Retune with the sweep in tools/eval_gate.mjs.
  */
-const SIM_FLOOR = 0.68;
-const SIM_MARGIN = 0.12; // among concepts that clear the floor, keep the close ones
+const SIM_GATE = 0.50;   // best non-named concept must reach this to light anything
+const SIM_FLOOR = 0.44;  // per-concept backstop beneath the relative cutoff
+const SIM_MARGIN = 0.12; // among concepts near the best, keep the close ones
 const BOOST = 0.012;    // score added per activated concept found in a passage
 const MAX_BOOST = 3;    // ...counted at most this many times
 
@@ -124,12 +131,15 @@ export function activate(graph, corpus, rankedIndices, query, { max = MAX_ACTIVE
    */
   const sims = conceptSimilarity(graph, queryVec);
   if (sims) {
+    // The best non-named concept decides whether anything is on-topic enough to
+    // light at all; a named concept is relevance by definition and is exempt.
     let bestSim = 0;
-    for (const [i] of score) if (sims[i] > bestSim) bestSim = sims[i];
+    for (const [i] of score) if (!named.has(i) && sims[i] > bestSim) bestSim = sims[i];
+    const relevant = bestSim >= SIM_GATE;
     const cutoff = Math.max(SIM_FLOOR, bestSim - SIM_MARGIN);
     for (const [i] of [...score]) {
       if (named.has(i)) continue;
-      if (sims[i] < cutoff) score.delete(i);
+      if (!relevant || sims[i] < cutoff) score.delete(i);
       else score.set(i, score.get(i) * (0.5 + sims[i]));   // prefer the closest
     }
   }

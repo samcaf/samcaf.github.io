@@ -2,8 +2,8 @@
  * ask.js — the "Ask" widget: a floating bar that opens a panel (desktop
  * sidebar / mobile bottom sheet) for page-scoped question answering.
  *
- * Retrieval renders first and verbatim; generated synthesis is a separate
- * zone, so quotes can never be paraphrased into something you didn't write.
+ * Retrieval renders first and verbatim: passages are quoted exactly, so nothing
+ * is ever paraphrased into something you didn't write.
  *
  * The same assistant runs on every page against one unified index, so any
  * question can be asked from anywhere on the site.
@@ -12,8 +12,7 @@
 import { loadIndex, search, loadEmbedder, isEmbedderReady } from './retrieval.js';
 import { createGalaxy } from './galaxy.js';
 import { prepareGraph, activate } from './graphboost.js';
-import { extractiveAnswer } from './extractive.js';
-import { renderMath, hasMath, preloadMath } from './math.js';
+import { renderMath, preloadMath } from './math.js';
 
 // One assistant, one corpus, every page: a visitor shouldn't have to guess
 // which part of the site knows the answer.
@@ -62,7 +61,7 @@ root.innerHTML = `
     <div class="ask-body">
       <figure class="ask-galaxy" hidden>
         <canvas aria-label="Concept map of this page's sources"></canvas>
-        <figcaption>Concepts from my glossary. Lit stars are the ones your answer came from &mdash; drag to spin, click a star to explore.</figcaption>
+        <figcaption>Concepts from my glossary. Lit stars are the ones behind your top sources &mdash; drag to spin, click a star to explore.</figcaption>
       </figure>
       <div class="ask-results"></div>
     </div>
@@ -195,7 +194,7 @@ function el(tag, className, text) {
 
 function showIdle() {
   body.replaceChildren();
-  body.appendChild(el('p', 'ask-intro', `${cfg.blurb} Answers quote the source directly, so you can check every claim.`));
+  body.appendChild(el('p', 'ask-intro', `${cfg.blurb} Results quote the source directly, so you can check every claim.`));
   body.appendChild(el('div', 'ask-sugg-label', 'Try asking'));
   const wrap = el('div', 'ask-sugg');
   for (const q of cfg.suggestions) {
@@ -298,71 +297,13 @@ function showResults(hits, weak = false) {
   body.appendChild(sources);
   cards.forEach((c) => c._fitMore());
 
-  const synth = el('div', 'ask-zone');
-  const shead = el('div', 'ask-zone-head');
-  shead.appendChild(el('h3', null, 'Answer'));
-  shead.appendChild(el('span', 'ask-zone-note', 'quoted, not paraphrased'));
-  synth.appendChild(shead);
-  const box = el('div', 'ask-synth');
-  synth.appendChild(box);
-  body.appendChild(synth);
-  renderSynthesis(box, hits, lastQueryVec);
-
   keepAtBottom();
-}
-
-/* ---------------- synthesis ---------------- */
-
-/**
- * The answer is extractive: the search embedder ranks the sentences inside the
- * retrieved passages and the best few are quoted verbatim, with the number of
- * the source they came from.
- *
- * There is deliberately no language model here. A small one that fits in a
- * browser paraphrases badly — it misspelled names that were sitting in front of
- * it and cited excerpts that did not exist — and buys nothing this does not
- * already give: the sentences are the author's, so a citation is exact by
- * construction and nothing can be hallucinated, only missed.
- */
-async function renderSynthesis(box, hits, queryVec) {
-  box.replaceChildren(el('p', 'ask-synth-pending', 'Reading the passages…'));
-
-  let picked = [];
-  try {
-    picked = await extractiveAnswer({ index: await indexPromise, hits, queryVec });
-  } catch (err) {
-    console.warn('[ask] extractive', err);
-  }
-
-  box.replaceChildren();
-  if (!picked.length) {
-    box.appendChild(el('p', 'ask-synth-pending',
-      'No single passage answers this directly — the sources above are the closest material.'));
-    return;
-  }
-
-  const p = el('p', 'ask-synth-text');
-  picked.forEach((s, i) => {
-    if (i) p.appendChild(document.createTextNode(' '));
-    if (hasMath(s.text)) {
-      const span = el('span');
-      renderMath(span, s.text + ' ');
-      p.appendChild(span);
-    } else {
-      p.appendChild(document.createTextNode(s.text + ' '));
-    }
-    p.appendChild(el('span', 'ask-synth-cite', `[${s.n}]`));
-  });
-  box.appendChild(p);
-  box.appendChild(el('p', 'ask-synth-caveat',
-    'Assembled from the passages above — the sentences that best match your question, quoted exactly and in their original order. Nothing here is paraphrased.'));
 }
 
 /* ---------------- query flow ---------------- */
 
 let indexPromise = null;
 let busy = false;
-let lastQueryVec = null;   // reused by the extractive tier to score sentences
 
 async function run(query) {
   if (busy || !query.trim()) return;
@@ -384,7 +325,6 @@ async function run(query) {
 
     showStatus('Searching…', 'Embedding your question and comparing it against the index.');
     const { hits, ranked, queryVec, weak } = await search(index, query, 4);
-    lastQueryVec = queryVec;
 
     if (!hits.length) {
       galaxy?.clear();   // nothing matched: the galaxy must not stay lit from before
