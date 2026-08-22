@@ -289,18 +289,6 @@
 .ask-cite a:hover { color: var(--accent); border-color: var(--accent); }
 .ask-cite-loc { color: var(--text-dim); }
 
-/* Synthesis: model-generated, visually distinct from quotes */
-.ask-synth {
-  padding: 13px 14px;
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius-sm);
-  background: linear-gradient(180deg, rgba(139, 157, 255, 0.05), transparent);
-  font-size: 0.86rem;
-  line-height: 1.65;
-  color: var(--text-mid);
-}
-.ask-synth-pending { color: var(--text-dim); font-size: 0.82rem; }
-
 /* ---------- Composer ---------- */
 .ask-form {
   display: flex;
@@ -383,24 +371,6 @@
   font-size: 0.8rem;
 }
 
-/* ---------- Synthesis (generated prose, kept visually apart from quotes) ---------- */
-.ask-synth-text {
-  margin: 0;
-  font-size: 0.86rem;
-  line-height: 1.65;
-  color: var(--text);
-  white-space: pre-wrap;
-}
-.ask-synth-caveat {
-  margin: 10px 0 0;
-  padding-top: 9px;
-  border-top: 1px dashed var(--border-strong);
-  font-size: 0.72rem;
-  line-height: 1.5;
-  color: var(--text-dim);
-}
-.ask-synth .ask-progress { margin-top: 9px; }
-
 /* Collapsed sources: citation line only, click or Enter to reveal the quote. */
 .ask-src--min {
   padding: 9px 11px 9px 13px;
@@ -419,19 +389,6 @@
   color: var(--text-dim);
   font-size: 0.7rem;
 }
-
-/* Extractive answer: quoted sentences with their source number. */
-.ask-synth-cite {
-  color: var(--accent-2);
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-}
-.ask-synth-upgrade {
-  margin-top: 12px;
-  padding-top: 11px;
-  border-top: 1px dashed var(--border-strong);
-}
-.ask-synth-upgrade .ask-synth-pending { margin: 0 0 9px; }
 
 /* ---------- Math ---------- */
 .ask-math { font-size: 1.02em; }
