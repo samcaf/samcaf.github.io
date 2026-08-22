@@ -7,10 +7,8 @@ tools/.cache/
 # Editor/agent scratch
 .claude/
 
-# Vendored third-party runtimes and model weights (~63 MB). Reproducible, so
-# they stay out of git history:
+# The vendored runtime (scripts/ask/vendor/) and model weights (assets/models/)
+# are committed so GitHub Pages can serve the in-browser search. To regenerate:
 #   scripts/ask/vendor/  -> npm i @huggingface/transformers katex
 #                           (copy dist bundles + onnxruntime .wasm)
 #   assets/models/       -> Xenova/bge-small-en-v1.5 (config, tokenizer, onnx/q8)
-assets/models/
-scripts/ask/vendor/
